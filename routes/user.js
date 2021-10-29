@@ -22,6 +22,8 @@ router.use(flash());
 
 router.use(session({
     secret : 'Shallow Dive Project',
+    resave: true,
+    saveUninitialized: true
 }))
 
 router.use(function(req , res , next){
@@ -39,8 +41,10 @@ router.use(function(req , res , next){
 router.get('/posts', function(req, res) {
     //This link will fetch posts from database
     var db = req.app.locals.db;
+    
     if(req.query.search){
         const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+        
         db.collection('Blog').find({$or:[{$and:[{heading : regex} , {status : 1}]},{$and:[{category : regex} , {status : 1}]},{$and:[{username : regex} , {status : 1}]}]}).toArray(function(err , data){
             if(err){
                 throw err;

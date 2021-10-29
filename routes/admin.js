@@ -1,3 +1,4 @@
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var router = express.Router();
@@ -8,6 +9,7 @@ var multer = require('multer');
 var flash = require('connect-flash');
 var upload = multer({ dest: 'uploads/' });
 var nodemailer = require('nodemailer');
+var session = require('express-session');
 const now = new Date();
 require('dotenv').config();
 router.use(bodyParser.urlencoded({ extended: true  }));
@@ -23,7 +25,9 @@ router.get('/login', function(req, res) {
 
 router.use(session({
     secret : 'Shallow Dive Project',
-}))
+    resave: true,
+    saveUninitialized: true
+}));
 
 // email
 
